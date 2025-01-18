@@ -1,11 +1,15 @@
-import csv
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+import csv 
 import pandas as pd
+
 columns = ['Date','Category','Amount','Type']
 try:
       df = pd.read_csv('expense.csv')
 except FileNotFoundError:
       df = pd.DataFrame(columns = columns)
 
+choice = "1"
 print("""
 Personal Expense Tracker
       1.Add Transaction
@@ -15,70 +19,70 @@ Personal Expense Tracker
       5.Save and Exit
 """)
 
-choice = input("Enter your choice: ")
-while choice >= "0" and choice <= "6" :
+
+while choice > "0" and choice < "6" :
+      choice = input("Enter your choice: ")
       if choice == "1" :      
             
+
             date = input("Enter the date (YYYY-MM-DD): ")
-            catergory = str(input("Enter the categozy (e.g. Food,tansport): "))
+            category = str(input("Enter the categozy (e.g. Food,tansport): "))
             amount = float(input("Enter the amount: "))
-            trans_type = str(input("Enter the type (Expense/Income): "))
-            df.loc[len(df)] = {'Date': date, 'Casuccessfutegory': catergory, 'Amount': amount, 'Type': trans_type}
+            type = str(input("Enter the type (Expense/Income): "))
+            df.loc[len(df)] = {'Date': date, 'Category': category, 'Amount': amount, 'Type': type}
             print("Transaction added successfuly")
-            choice = input("Enter your choice: ")
+            print(df)
+           
+           
 
       elif choice == "2" :
-           index = input("Enter the transaction index to edit: ")
+           index = int(input("Enter the transaction index to edit: "))
            print(df.loc[index])
-           new_date = input("Enter new date or press enter to keep currrent: ")
-           if new_date == " ":
+           new_date = str(input("Enter new date o11r press enter to keep current: "))
+           if new_date == "":
                  new_date = date
            else :
                  new_date = new_date
                  
-           new_category = str(input("Enter new category: "))
-           if new_category == " ":
-                 new_category = catergory
+           new_category = str(input("Enter new category or press enter to keep currrent: "))
+           if new_category == "":
+                 new_category = category
            else :
+
                  new_category = new_category
                  
-           new_amount = float(input("Enter new amount: "))
-           if new_amount == " ":
+           new_amount = input("Enter new amount or press enter to keep currrent: ")
+           if new_amount == "":
                  new_amount = amount
            else :
                  new_amount = new_amount
                  
-           new_type = str(input("Enter new type: "))
-           if new_type == " ":
+           new_type = input("Enter new type or press enter to keep currrent: ")
+           if new_type == "":
                  new_type = type
            else :
                  new_type = new_type
                  
            df.loc[index] = {'Date': new_date, 'Category': new_category, 'Amount': new_amount, "Type": new_type}
            print("Transaction edited successfuly")
-
-           choice = input("Enter your choice: ")
-
-      elif choice == "3":
+          
+      elif choice == "3" :
           index = int(input("Enter the transaction index to delete: "))
           df = df.drop(index).reset_index(drop=True)
           print("Transaction delete successfuly")
         
-          choice = input("Enter your choice: ")
-      elif choice == "4":
+      elif choice == "4" :
             total_expense = df[df['Type'] == 'Expense']['Amount'].sum()
             total_income = df[df['Type'] == 'Income']['Amount'].sum()
             saving = total_income - total_expense
 
-            if total_expense == "0" and total_income == "0": print("no related data")
-
             print("---Expense Summary---")
             print(f"Total expense: {total_expense}")
             print("---Income Summary---")
-            print(f"Total income: {total_income}")
+            print(f"Total income: {total_income}")         
             print(f"Total saving: {saving}")
             
-      elif choice == '5':
+      elif choice == "5" :
             df.to_csv('expense.csv',index=False)
             print("Data saved to expense.csv")
             break
@@ -97,5 +101,7 @@ while choice >= "0" and choice <= "6" :
 
 
         
+        
+
         
       
